@@ -23,6 +23,8 @@ def index():
     return render_template("index.html")
 
 
+
+
 @app.route('/about.html')
 def about():
     return render_template("about.html")
@@ -174,15 +176,7 @@ def check_mail_exists(mail_id):
 
 
 
-"""
-def organize():
-    table_data=[]
-    query = "SELECT * FROM organization;"
-    df = pd.read_sql(query, mydb)
-    table_data = df.to_dict(orient='records')
-    print(table_data)
-    return table_data
-"""
+
 
 if __name__ == '__main__':
     app.run(debug=True)
