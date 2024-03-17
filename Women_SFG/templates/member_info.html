@@ -69,12 +69,12 @@
     
     <h1>{{ group_name }}</h1>
 <p>{{ group_description }}</p>
-{% set members_data = members %}
+
 
 <button id="add-leader-btn">Add Group Leader</button>
 <br>
 <div id="members-container">
-    {% for member in members_data %}
+    {% for member in members %}
     <div>
         <h2>Member {{ member[0] }}</h2>
         <form>
