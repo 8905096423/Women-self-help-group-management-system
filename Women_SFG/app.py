@@ -17,11 +17,22 @@ mydb=mysql.connector.connect(
 global mycursor
 mycursor=mydb.cursor()
 
+members = [
+    {"id": 1, "name": "Member 1", "age": 25, "occupation": "Teacher"},
+    {"id": 2, "name": "Member 2", "age": 30, "occupation": "Nurse"},
+    {"id": 3, "name": "Member 3", "age": 35, "occupation": "Entrepreneur"}
+]
 
 @app.route('/')
 def index():
     return render_template("index.html")
 
+
+@app.route('/member_info.html')
+def memb():
+    group_name = "Women's Self-Help Group"
+    group_description = "Welcome to our women's self-help group. We empower each other through mutual support and collaboration."
+    return render_template('member_info.html', group_name=group_name, group_description=group_description, members=members)
 
 
 

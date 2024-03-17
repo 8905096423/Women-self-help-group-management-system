@@ -55,7 +55,7 @@
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 5px;
-    background-color:#ff6600ca;
+    background-color:#ff6600db;
     border: none;
     color: #fff;
     cursor: pointer;
@@ -74,8 +74,6 @@
   
 <!-- header section starts -->
 <header class="header_section">
-    
-  
     <div class="header_bottom" style="background-color:rgba(148, 89, 11, 0.865);">
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -117,9 +115,9 @@
 </header>
 
 <!-- View Group Information Section -->
-<section class="view_group_information_section" style="margin-top: 250px; width: 100%; height: auto;">
+<section class="view_group_information_section" >
   <div class="container" >
-      <div class="row align-items-center justify-content-center">
+      <div class="row align-items-center justify-content-center" style="margin-top: 170px; width: 100%; height: auto;">
           <div class="col-md-6">
               <div class="view_group_info">
                   <h2>View Group Information</h2>
@@ -127,20 +125,37 @@
                   <button class="btn btn-primary">View Group Information</button>
               </div>
           </div>
-          <div class="col-md-6">
-              <div class="edit_group_info">
+          <div class="col-md-6" >
+              <div class="edit_group_info" >
                   <h2>Edit Group Information</h2>
                   <p>In the edit option, you can edit all information related to your group, such as interests, loans, collected amounts, and more.</p>
                   <button class="btn btn-secondary">Edit Group Information</button>
               </div>
           </div>
       </div>
-  </div>
+
+      <br>
+      
+      <div class="col-md-6" style="margin-left: 330px;">
+        <div class="edit_group_info">
+            <h2>Group Member Details</h2>
+            <p>Here you can view the personal details of group members, and you have the option to edit their personal information if necessary.</p>
+            <button class="btn btn-secondary"  onclick="redirectToNewPage()">Member Details</button>
+        </div>
+      </div>
+   </div>
+
 </section>
 
 
 
 <!-- Footer Section (You can add it later if needed) -->
+<script>
+    function redirectToNewPage() {
+        // Redirect to the new page
+        window.location.href = "/member_info.html";
+    }
+</script>
 
 <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
