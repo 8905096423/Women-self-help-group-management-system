@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np 
 import secrets 
 
+
 app=Flask(__name__)
 app.secret_key = 'RNSIT#123hpooja'
 mydb=mysql.connector.connect(
@@ -16,7 +17,7 @@ mydb=mysql.connector.connect(
 )
 global mycursor
 mycursor=mydb.cursor()
-
+global i
 
 
 @app.route('/')
@@ -26,8 +27,11 @@ def index():
 
 @app.route('/member_info.html')
 def memb():
-    mycursor.execute("SELECT Member_id, M_Name, Age, Adress, ph_no FROM GRPP")
+    sql = "SELECT Member_id, M_Name, Age, Adress, ph_no FROM GRPP WHERE gp_Username = %s"
+    mycursor.execute(sql, (inn_username,))
     members = mycursor.fetchall()
+    num_members = len(members)
+    
     # Pass group information and member data to the template
     group_name = "Women's Self-Help Group"
     group_description = "Welcome to our women's self-help group. We empower each other through mutual support and collaboration."
@@ -59,14 +63,29 @@ def delete_member(member_id):
 
 
 
+
+@app.route('/get_data')
+def get_data():
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    query1 ="SELECT MAX(CAST(SUBSTRING(Member_id, LOCATE('_', Member_id) + 1) AS UNSIGNED)) AS max_member_id FROM GRPP WHERE gp_Username = %s" 
+    mycursor.execute(query1, (inn_username,))
+    members = mycursor.fetchall()
+    max_id =int(members[0][0]) + 1
+    new_memb_id=inn_username+'_'+str(max_id)
+    
+    data = {'message':new_memb_id }
+    return jsonify(data)
+
+
 @app.route('/save-member/<member_id>/<name>/<age>/<address>/<ph_no>', methods=['POST'])
 def save_member(member_id,name,age,address,ph_no):
     
-
     # Check if member ID exists in GRPP table
     query = "SELECT * FROM GRPP WHERE Member_id = %s"
     mycursor.execute(query, (member_id,))
     existing_member = mycursor.fetchone()
+
+
 
     if existing_member:
         # Member ID exists, update the member details
@@ -74,9 +93,10 @@ def save_member(member_id,name,age,address,ph_no):
         mycursor.execute(update_query, (name, age, address, ph_no, member_id))
     else:
         # Member ID does not exist, insert a new member
-        insert_query = "INSERT INTO GRPP (Member_id, M_Name, Age, Adress, ph_no) VALUES (%s, %s, %s, %s, %s)"
-        mycursor.execute(insert_query, (member_id, name, age, address, ph_no))
-
+        
+        insert_query = "INSERT INTO GRPP (gp_Username ,Member_id, M_Name, Age, Adress, ph_no) VALUES (%s,%s, %s, %s, %s, %s)"
+        mycursor.execute(insert_query, (inn_username,member_id, name, age, address, ph_no))
+        
     # Commit changes to the database
     mydb.commit()
 
@@ -112,11 +132,12 @@ def Grp_info():
 
 @app.route('/Grp_signin', methods=['POST'])
 def grp_signin():
-        username = request.form['In_username']
+        global inn_username
+        inn_username = request.form['In_username']
         password = request.form['In_password']
         groupname = request.form['In_groupname']
         query = "SELECT * FROM ORG WHERE Username = %s AND Pass_word = %s AND Group_Name = %s "
-        mycursor.execute(query, (username, password,groupname))
+        mycursor.execute(query, (inn_username, password,groupname))
         user = mycursor.fetchone()
         
         if user:
