@@ -31,11 +31,11 @@ def memb():
     mycursor.execute(sql, (inn_username,))
     members = mycursor.fetchall()
     num_members = len(members)
-    
+    memb_id_value=inn_username+'_'+str(1)
     # Pass group information and member data to the template
     group_name = "Women's Self-Help Group"
     group_description = "Welcome to our women's self-help group. We empower each other through mutual support and collaboration."
-    return render_template('member_info.html', group_name=group_name, group_description=group_description, members=members)
+    return render_template('member_info.html', group_name=group_name, group_description=group_description, members=members,memb_length=num_members,memb_value=memb_id_value)
 
 
 
@@ -66,7 +66,7 @@ def delete_member(member_id):
 
 @app.route('/get_data')
 def get_data():
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+   
     query1 ="SELECT MAX(CAST(SUBSTRING(Member_id, LOCATE('_', Member_id) + 1) AS UNSIGNED)) AS max_member_id FROM GRPP WHERE gp_Username = %s" 
     mycursor.execute(query1, (inn_username,))
     members = mycursor.fetchall()

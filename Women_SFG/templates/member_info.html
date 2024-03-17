@@ -69,14 +69,41 @@
     
     <h1>{{ group_name }}</h1>
 <p>{{ group_description }}</p>
+{% if not memb_length %}
+<div>
+    <h2>Group Leader</h2>
+    <form>
+        <label for="member_id">Member ID:</label>
+        <input type="text" id="member_id" value="{{memb_value}}" readonly><br>
 
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" required><br>
+        
+        <label for="address">Address:</label>
+        <input type="text" id="address" required><br>
+        
+        <label for="phNo">Phone:</label>
+        <input type="text" id="phNo" required><br>
 
-<button id="add-leader-btn">Add Group Leader</button>
+        <button type="button" onclick="toggleEdit(this)">Edit</button>
+        <button type="button" onclick="deleteMember(this)">Delete</button>
+        <button type="submit" id="save-button" onclick="saveMember(this)">Save</button>
+    </form>
+    <hr>
+</div>
+{% endif %}
 <br>
 <div id="members-container">
     {% for member in members %}
     <div>
+        {% if member[0].endswith('1') %}
+          <h2>Leader</h2>
+        {% else %}
         <h2>Member {{ member[0] }}</h2>
+        {% endif %}
         <form>
             <label for="member_id">Member ID:</label>
             <input type="text" id="member_id" value="{{ member[0]}}" required readonly><br>
