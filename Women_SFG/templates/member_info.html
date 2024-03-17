@@ -73,20 +73,29 @@
 <div id="members-container">
     {% for member in members %}
     <div>
-        <h2>Member {{ member.id }}</h2>
+        <h2>Member {{ member[0] }}</h2>
         <form>
+            <label for="member_id">Member ID:</label>
+            <input type="text" id="member_id" value="{{ member[0]}}" required readonly><br>
+
             <label for="name">Name:</label>
-            <input type="text" id="name" value="{{ member.name }}" required readonly><br>
+            <input type="text" id="name" value="{{ member[1]}}" required readonly><br>
             
             <label for="age">Age:</label>
-            <input type="number" id="age" value="{{ member.age }}" required readonly><br>
+            <input type="number" id="age" value="{{ member[2] }}" required readonly><br>
             
-            <label for="occupation">Occupation:</label>
-            <input type="text" id="occupation" value="{{ member.occupation }}" required readonly><br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" value="{{ member[3] }}" required readonly><br>
+  
+
+           <label for="address">Phone:</label>
+            <input type="text" id="phNo" value="{{ member[4] }}" required readonly><br>
+
             
             <button type="button" onclick="toggleEdit(this)">Edit</button>
             <button type="button" onclick="deleteMember(this)">Delete</button>
-            <button type="submit" style="display: none;">Save</button>
+            <button type="submit" id="save-button" onclick="saveMember(this)" style="display: none;">Save</button>
+
         </form>
         <hr>
     </div>
@@ -96,20 +105,45 @@
 <button id="add-member-btn">Add Member</button>
 
 <script>
-    function toggleEdit(button) {
-        var form = button.closest('form');
-        var inputs = form.querySelectorAll('input');
-        inputs.forEach(function(input) {
+   function toggleEdit(button) {
+    var form = button.closest('form');
+    var inputs = form.querySelectorAll('input');
+    inputs.forEach(function(input) {
+        // Exclude member_id field from being toggled
+        if (input.id !== 'member-id') {
             input.readOnly = !input.readOnly;
-        });
-        var saveButton = form.querySelector('button[type="submit"]');
-        saveButton.style.display = saveButton.style.display === 'none' ? 'block' : 'none';
-    }
+        }
+    });
+    var saveButton = form.querySelector('button[type="submit"]');
+    saveButton.style.display = saveButton.style.display === 'none' ? 'block' : 'none';
+}
+
+
 
     function deleteMember(button) {
+        
+        var memberId = button.closest('div').querySelector('#member_id').value; // Extracting member ID
         var form = button.closest('div');
-        form.remove();
+        
+        // Ask for confirmation
+        var confirmDelete = confirm('Are you sure you want to delete member ' + memberId + '?');
+
+        if (confirmDelete) {
+            // If confirmed, proceed with deletion
+            fetch(`/delete-member/${memberId}`, {  // Use backticks (`) to include variables in a string
+    method: 'POST',
+})
+.then(response => {
+                if (response.ok) {
+                    form.remove(); // Remove the member from the UI
+                } else {
+                    alert('Failed to delete member');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     }
+
 
     document.getElementById("add-member-btn").addEventListener("click", function() {
         var container = document.getElementById("members-container");
@@ -136,6 +170,36 @@
         `;
         container.appendChild(newMemberDiv);
     });
+
+
+     function saveMember(button){
+        var memberId = button.closest('div').querySelector('#member_id').value; // Extracting member ID
+        var name = button.closest('div').querySelector('#name').value;
+        var age = button.closest('div').querySelector('#age').value;
+        var address = button.closest('div').querySelector('#address').value;
+        var ph_no = button.closest('div').querySelector('#phNo').value;
+       
+        var form = button.closest('div');
+        
+        
+        var confirmDelete = confirm('Are you sure you want to Save  the new changes ?' );
+        if (confirmDelete) {
+            
+            fetch(`/save-member/${memberId}/${name}/${age}/${address}/${ph_no}`, {  // Use backticks (`) to include variables in a string
+    method: 'POST',
+})
+.then(response => {
+                if (response.ok) {
+                    alert('Changes saved successfully!'); // Remove the member from the UI
+                } else {
+                    alert('Failed to Save the changes');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+     }
+
+    
 </script>
 
 

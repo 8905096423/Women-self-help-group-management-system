@@ -1,6 +1,6 @@
 import json 
 from urllib.parse import urlparse
-from flask import Flask,render_template,request,session,redirect, url_for, flash
+from flask import Flask,render_template,request,session,redirect, url_for, flash,jsonify
 import mysql.connector 
 import pandas as pd
 import numpy as np 
@@ -17,11 +17,7 @@ mydb=mysql.connector.connect(
 global mycursor
 mycursor=mydb.cursor()
 
-members = [
-    {"id": 1, "name": "Member 1", "age": 25, "occupation": "Teacher"},
-    {"id": 2, "name": "Member 2", "age": 30, "occupation": "Nurse"},
-    {"id": 3, "name": "Member 3", "age": 35, "occupation": "Entrepreneur"}
-]
+
 
 @app.route('/')
 def index():
@@ -30,9 +26,67 @@ def index():
 
 @app.route('/member_info.html')
 def memb():
+    mycursor.execute("SELECT Member_id, M_Name, Age, Adress, ph_no FROM GRPP")
+    members = mycursor.fetchall()
+    # Pass group information and member data to the template
     group_name = "Women's Self-Help Group"
     group_description = "Welcome to our women's self-help group. We empower each other through mutual support and collaboration."
     return render_template('member_info.html', group_name=group_name, group_description=group_description, members=members)
+
+
+
+
+
+@app.route('/delete-member/<member_id>', methods=['POST'])
+def delete_member(member_id):
+    # Fetch member details from GRPP table
+    query = "SELECT * FROM GRPP WHERE Member_id = %s"
+    mycursor.execute(query, (member_id,))
+    member_details = mycursor.fetchone()
+    if member_details:
+        # Insert member details into PAST_MEMB table
+        insert_query = "INSERT INTO PAST_MEMB VALUES (%s, %s, %s, %s, %s, %s)"
+        mycursor.execute(insert_query, member_details)
+        # Delete member record from GRPP table
+        delete_query = "DELETE FROM GRPP WHERE Member_id = %s"
+        mycursor.execute(delete_query, (member_id,))
+        # Commit changes
+        mydb.commit()
+        return jsonify({'success': True}), 200
+    else:
+        return jsonify({'success': False}), 404
+
+
+
+
+@app.route('/save-member/<member_id>/<name>/<age>/<address>/<ph_no>', methods=['POST'])
+def save_member(member_id,name,age,address,ph_no):
+    
+
+    # Check if member ID exists in GRPP table
+    query = "SELECT * FROM GRPP WHERE Member_id = %s"
+    mycursor.execute(query, (member_id,))
+    existing_member = mycursor.fetchone()
+
+    if existing_member:
+        # Member ID exists, update the member details
+        update_query = "UPDATE GRPP SET M_Name = %s, Age = %s, Adress = %s, ph_no = %s WHERE Member_id = %s"
+        mycursor.execute(update_query, (name, age, address, ph_no, member_id))
+    else:
+        # Member ID does not exist, insert a new member
+        insert_query = "INSERT INTO GRPP (Member_id, M_Name, Age, Adress, ph_no) VALUES (%s, %s, %s, %s, %s)"
+        mycursor.execute(insert_query, (member_id, name, age, address, ph_no))
+
+    # Commit changes to the database
+    mydb.commit()
+
+    return jsonify({'success': True}), 200
+
+
+
+
+
+
 
 
 
