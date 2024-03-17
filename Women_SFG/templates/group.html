@@ -184,36 +184,38 @@
       <div class="form-container">
        
         {% if not signup_confirm %}
-          <form class="Form_Sign" id="signupForm" action="/Grp_signup" method="POST" style="background-color:rgb(230, 222, 222);">
-            {% with messages = get_flashed_messages(with_categories=true) %}
+        <form class="Form_Sign" id="signupForm" action="/Grp_signup" method="POST" style="background-color:rgb(230, 222, 222);">
+          {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
-         {% for category, message in messages %}
-         <div class="alert alert-{{ category }}" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; padding: 10px; margin-bottom: 15px; border: 1px solid transparent; border-radius: 4px;">
-          <p style="color: red; margin-top: 0;">{{ message }}</p>
-        
+          {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; padding: 10px; margin-bottom: 15px; border: 1px solid transparent; border-radius: 4px;">
+              <p style="color: red; margin-top: 0;">{{ message }}</p>
           </div>
           {% endfor %}
           {% endif %}
-        {% endwith %}
-              <h2>Group Sign Up</h2>
-              <label for="username">Username:</label>
-              <input type="text" class="style_cls" id="username" name="username" placeholder="Enter your username" required>
-             
-              <label for="username">Email adress</label>
-              <input type="text" class="style_cls" id="emailAdd" name="emailAdd" placeholder="Please provide an email address for communication purposes." required>
-              
-              <label for="password">Password:</label>
-              <input type="password" class="style_cls" id="password" name="password" placeholder="Enter your password" required>
-              <input type="text" class="style_cls" id="confirmPass" name="confirmPass" placeholder="Confirm your password" required>
-              
-              <input type="checkbox" id="CheckBox" name="check" value="yes" required/>    
-              <label>I accept the Terms of Use & Privacy Policy</label>   
-
-              <button type="submit">Sign Up</button>
-              <p class="login-link">Already have an account? <a href="/manageGroup.html" id="logi">Login here</a></p>
-              <p class="forgot-password-link"><a href="#" id="forgotPasswordLink">Forgot password?</a></p>
-          </form>
+          {% endwith %}
           
+          <h2>Group Sign Up</h2>
+          <label for="username">Username:</label>
+          <input type="text" class="style_cls" id="username" name="username" placeholder="Enter your username" required>
+          
+          <label for="emailAdd">Email address:</label>
+          <input type="email" class="style_cls" id="emailAdd" name="emailAdd" placeholder="Enter your email address" required>
+          <p id="emailError" style="color: red; display: none;">Please enter a valid email address.</p>
+          
+          <label for="password">Password:</label>
+          <input type="password" class="style_cls" id="password" name="password" placeholder="Enter your password" required>
+          <p id="passwordError" style="color: red; display: none;">Password should be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one number, and one special character.</p>
+          
+          <input type="text" class="style_cls" id="confirmPass" name="confirmPass" placeholder="Confirm your password" required>
+          
+          <input type="checkbox" id="CheckBox" name="check" value="yes" required>
+          <label for="CheckBox">I accept the Terms of Use & Privacy Policy</label>
+          
+          <button type="submit" onclick="return validateForm()">Sign Up</button>
+          <p class="login-link">Already have an account? <a href="/manageGroup.html" id="logi">Login here</a></p>
+          <p class="forgot-password-link"><a href="#" id="forgotPasswordLink">Forgot password?</a></p>
+      </form>
           
 
 
@@ -257,8 +259,32 @@
       </div>
     </div>
   </div>
-   
+  
+   <script>
+  function validateForm() {
+    var emailInput = document.getElementById('emailAdd');
+    var passwordInput = document.getElementById('password');
 
+    // Check email format
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(emailInput.value)) {
+        document.getElementById('emailError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('emailError').style.display = 'none';
+    }
+
+    // Check password strength
+    var passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    if (!passwordPattern.test(passwordInput.value)) {
+        document.getElementById('passwordError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('passwordError').style.display = 'none';
+    }
+
+    return true;
+}  </script>
 
 
   <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>

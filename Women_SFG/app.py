@@ -44,31 +44,21 @@ def Grp_info():
     return render_template("grp_info.html")
 
 
-# ... (Your existing routes)
+
 @app.route('/Grp_signin', methods=['POST'])
 def grp_signin():
-    
-        # Get form data
         username = request.form['In_username']
         password = request.form['In_password']
-        
-        # Connect to MySQL database
-        
-        
-        # Query to check if username and password exist in the database
-        query = "SELECT * FROM ORG WHERE Username = %s AND Pass_word = %s"
-        mycursor.execute(query, (username, password))
+        groupname = request.form['In_groupname']
+        query = "SELECT * FROM ORG WHERE Username = %s AND Pass_word = %s AND Group_Name = %s "
+        mycursor.execute(query, (username, password,groupname))
         user = mycursor.fetchone()
         
         if user:
-      
-          
-            return redirect('/grp_info.html')  # Change 'dashboard' to your desired route
+            return redirect('/grp_info.html') 
         else:
-            # If user does not exist, show error message
-           
-            flash('Invalid username or password. Please sign up first.', 'error')
-            return redirect('/manageGroup.html')  # Change 'signup' to your signup route
+            flash('Invalid username or password or Group name. Please sign up first.', 'error')
+            return redirect('/manageGroup.html') 
         
         cursor.close()
         conn.close()
@@ -106,8 +96,6 @@ def grp_signup():
         gr_signup.append(email_Add)
         gr_signup.append(pass_word)
 
-
-
     signup_form = True
     return render_template('group.html', signup_confirm=signup_form,username_exists=False)
 
@@ -142,6 +130,9 @@ def grp_info():
 
 
 
+
+
+
 def check_username_exists(username):
     query1="SELECT * FROM ORG WHERE Username =%s"
     mycursor.execute(query1,(username,))
@@ -168,13 +159,6 @@ def check_mail_exists(mail_id):
         return False
     else:
         return True
-
-        
-
-
-
-
-
 
 
 
