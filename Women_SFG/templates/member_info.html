@@ -21,6 +21,70 @@
   
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        /* Body styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa; /* Light grey background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Main container styles */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* Form container styles */
+.form-container {
+    width: calc(50% - 30px); /* 50% width with spacing */
+    background-color: #fff; /* White background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+/* Form styles */
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    font-weight: bold;
+    color: #333;
+    font-size: medium; /* Dark text color */
+}
+
+form input[type="text"],
+form input[type="number"] {
+    width: calc(50%); /* Full width minus padding */
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 5px;
+}
+
+form button {
+    background-color: #4CAF50; /* Green button color */
+    color: #fff; /* White button text color */
+    border: none;
+    padding: 12px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: calc(33.33% - 100px); /* 33.33% width with spacing */
+}
+
+form button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+}
+
+    </style>
 </head>
 
 <body ng-controller="MemberController">
@@ -67,64 +131,66 @@
     
 
     
-    <h1>{{ group_name }}</h1>
-<p>{{ group_description }}</p>
+    <h1 style="margin-left: 600px;margin-top:50px;">{{ group_name }}</h1>
+<p  style="margin-left: 500px;">{{ group_description }}</p>
 {% if not memb_length %}
-<div>
-    <h2>Group Leader</h2>
-    <form>
-        <label for="member_id">Member ID:</label>
-        <input type="text" id="member_id" value="{{memb_value}}" readonly><br>
+<div style="background-color: #d4cdcd;">
+    <h2 style="margin-left:110px;">Group Leader</h2>
+    <br>
+    
+    <form >
+        <label for="member_id" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Member ID:</label>
+<input type="text" id="member_id" value="{{memb_value}}" readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
-        <label for="name">Name:</label>
-        <input type="text" id="name" required><br>
-        
-        <label for="age">Age:</label>
-        <input type="number" id="age" required><br>
-        
-        <label for="address">Address:</label>
-        <input type="text" id="address" required><br>
-        
-        <label for="phNo">Phone:</label>
-        <input type="text" id="phNo" required><br>
+<label for="name" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Name:</label>
+<input type="text" id="name" required style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
-        <button type="button" onclick="toggleEdit(this)">Edit</button>
-        <button type="button" onclick="deleteMember(this)">Delete</button>
-        <button type="submit" id="save-button" onclick="saveMember(this)">Save</button>
-    </form>
+<label for="age" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Age:</label>
+<input type="number" id="age" required style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
+
+<label for="address" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Address:</label>
+<input type="text" id="address" required style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
+
+<label for="phNo" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Phone:</label>
+<input type="text" id="phNo" required style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
+
+
+        <button type="button" onclick="toggleEdit(this)" style="width: 200px;margin-left:200px; background-color: #3498db; color: white; border: none; padding: 10px; margin-right: 10px;">Edit</button>
+    <button type="button" onclick="deleteMember(this)" style="width: 200px; background-color: #e74c3c; color: white; border: none; padding: 10px; margin-right: 10px;">Delete</button>
+    <button type="submit" id="save-button" onclick="saveMember(this)" style="width: 200px; background-color: #2ecc71; color: white; border: none; padding: 10px;">Save</button>
     <hr>
 </div>
 {% endif %}
 <br>
 <div id="members-container">
     {% for member in members %}
-    <div>
+    <div style="background-color: #d4cdcd;">
         {% if member[0].endswith('1') %}
           <h2>Leader</h2>
         {% else %}
         <h2>Member {{ member[0] }}</h2>
         {% endif %}
         <form>
-            <label for="member_id">Member ID:</label>
-            <input type="text" id="member_id" value="{{ member[0]}}" required readonly><br>
+            <label for="member_id" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Member ID:</label>
+            <input type="text" id="member_id" value="{{ member[0]}}" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
-            <label for="name">Name:</label>
-            <input type="text" id="name" value="{{ member[1]}}" required readonly><br>
+            <label for="name" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Name:</label>
+            <input type="text" id="name" value="{{ member[1]}}" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
             
-            <label for="age">Age:</label>
-            <input type="number" id="age" value="{{ member[2] }}" required readonly><br>
+            <label for="age" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Age:</label>
+            <input type="number" id="age" value="{{ member[2] }}" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
             
-            <label for="address">Address:</label>
-            <input type="text" id="address" value="{{ member[3] }}" required readonly><br>
+            <label for="address" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Address:</label>
+            <input type="text" id="address" value="{{ member[3] }}" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
   
 
-           <label for="phNo">Phone:</label>
-            <input type="text" id="phNo" value="{{ member[4] }}" required readonly><br>
+           <label for="phNo" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Phone:</label>
+            <input type="text" id="phNo" value="{{ member[4] }}" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
             
-            <button type="button" onclick="toggleEdit(this)">Edit</button>
-            <button type="button" onclick="deleteMember(this)">Delete</button>
-            <button type="submit" id="save-button" onclick="saveMember(this)" >Save</button>
+            <button type="button" onclick="toggleEdit(this)" style="width: 200px;margin-left:200px; background-color: #3498db; color: white; border: none; padding: 10px; margin-right: 10px;">Edit</button>
+            <button type="button" onclick="deleteMember(this)" style="width: 200px; background-color: #e74c3c; color: white; border: none; padding: 10px; margin-right: 10px;">Delete</button>
+            <button type="submit" id="save-button" onclick="saveMember(this)" style="width: 200px; background-color: #2ecc71; color: white; border: none; padding: 10px;" >Save</button>
 
         </form>
         <hr>
@@ -132,7 +198,20 @@
     {% endfor %}
 </div>
 
-<button id="add-member-btn">Add Member</button>
+<button id="add-member-btn" style="background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 4px #999;">Add Member <span style="font-size: 20px;">+</span></button>
+
 
 <script>
     
@@ -193,30 +272,31 @@
         newMemberDiv.innerHTML = `
             <h2>Member ${newMemberIndex}</h2>
             <form>
-                <label for="member_id">Member ID:</label>
-                <input type="text" id="member_id" value="${serverMessage}" readonly><br>
+                <label for="member_id" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Member ID:</label>
+                <input type="text" id="member_id" value="${serverMessage}" readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
-                <label for="name">Name:</label>
-                <input type="text" id="name" required readonly><br>
+                <label for="name" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Name:</label>
+                <input type="text" id="name" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
                 
-                <label for="age">Age:</label>
-                <input type="number" id="age" required readonly><br>
+                <label for="age" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Age:</label>
+                <input type="number" id="age" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
                 
-                <label for="address">Address:</label>
-                <input type="text" id="address" required readonly><br>
+                <label for="address" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Address:</label>
+                <input type="text" id="address" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
                 
-                <label for="phNo">Phone:</label>
-                <input type="text" id="phNo" required readonly><br>
+                <label for="phNo" style="display: inline-block; width: 100px; text-align: right; margin-right: 10px;">Phone:</label>
+                <input type="text" id="phNo" required readonly style="width: 1000px; padding: 8px; margin-bottom: 10px;"><br>
 
-                <button type="button" onclick="toggleEdit(this)">Edit</button>
-                <button type="button" onclick="deleteMember(this)">Delete</button>
-                <button type="submit" id="save-button" onclick="saveMember(this)">Save</button>
+                <button type="button" onclick="toggleEdit(this)" style="width: 200px; background-color: #3498db; margin-left:200px;color: white; border: none; padding: 10px; margin-right: 10px;">Edit</button>
+                <button type="button" onclick="deleteMember(this)" style="width: 200px; background-color: #e74c3c; color: white; border: none; padding: 10px; margin-right: 10px;">Delete</button>
+                <button type="submit" id="save-button" onclick="saveMember(this)" style="width: 200px; background-color: #2ecc71; color: white; border: none; padding: 10px;">Save</button>
             </form>
             <hr>
         `;
     })
     .catch(error => console.error('Error:', error));
 });
+
 
 
 
