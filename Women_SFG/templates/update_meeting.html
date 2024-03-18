@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Site Metas -->
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+      
+        <title>SFG</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+        <!-- fonts style -->
+        <link rel="stylesheet" href="{{url_for('static',filename='css/responsive.css')}}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        
+    </head>
+
+
+    <body ng-controller="FormController">
+        <header class="header_section">
+     
+      
+            <div class="header_bottom" style="background-color:rgba(148, 89, 11, 0.865);">
+              <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg custom_nav-container ">
+                  <a class="navbar-brand" href="index.html">
+                    <img src="{{url_for('static',filename='images/logo2.jpg')}}" alt="" style="width: 60px; height:60px;">
+                  </a>
+                  </a>
+      
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""> </span>
+                  </button>
+      
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/" style="font-size:18px;font-weight:bold;">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="groupDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:18px;font-weight:bold;">
+                                GROUP
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="groupDropdown">
+                                <a class="dropdown-item" href="/group.html" style="font-size:18px;font-weight:bold;">Create New Group</a>
+                                <a class="dropdown-item" href="/group.html" style="font-size:18px;font-weight:bold;">Manage Existing Group</a>
+                            </div>
+                        </li>
+                
+                        <li class="nav-item">
+                            <a class="nav-link" href="" style="font-size:18px;font-weight:bold;">Login</a>
+                        </li>
+                        
+                        <form class="form-inline">
+                            <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </ul>
+                
+                   
+                 </div>   
+                </nav>
+              </div>
+            </div>
+          </header>
+
+          <div class="container">
+            <h2>Week Number: {{ week_number }}</h2>
+        </div>
+    
+        <!-- Table -->
+        <div class="container mt-4">
+            <form action="/submit_form" method="post"> <!-- Specify the action and method for the form -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 10%;">Member ID</th>
+                            <th scope="col" style="width: 15%;">Name</th>
+                            <th scope="col" style="width: 10%;">Date</th>
+                            <th scope="col" style="width: 10%;">Saving</th>
+                            <th scope="col" style="width: 10%;">Loan Taken?</th>
+                            <th scope="col" style="width: 15%;">Any Loan Amount Returned?</th>
+                            <th scope="col" style="width: 15%;">Loan Interest Returned?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(len_memberz) %}
+                        <tr>
+                            <!-- Replace the content inside td with input fields -->
+                            <td><input type="text" name="member_id" value="{{members[i][1]}}" class="form-control" readonly></td>
+                            <td><input type="text" name="name" value="{{members[i][2]}}" class="form-control" re></td>
+                            <td><input type="date" name="date" class="form-control"></td>
+                            <td><input type="text" name="saving" class="form-control"></td>
+                            <td><input type="text" name="loan_taken" class="form-control"></td>
+                            <td><input type="text" name="loan_returned" class="form-control"></td>
+                            <td><input type="text" name="interest_returned" class="form-control"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary">Submit</button> <!-- Add a submit button to submit the form -->
+            </form>
+        </div>
+        
+
+      <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="{{url_for('static',filename='js/bootstrap.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+      <script src="https://huynhhuynh.github.io/owlcarousel2-filter/dist/owlcarousel2-filter.min.js"></script>
+      <script src="{{url_for('static',filename='js/custom.js')}}"></script> 
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+
+</html>

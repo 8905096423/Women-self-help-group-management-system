@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>SFG</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/font-awesome.min.css')}}">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+  <!-- fonts style -->
+  <link rel="stylesheet" href="{{url_for('static',filename='css/responsive.css')}}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .edit_group_info,
+.update_meeting_details {
+    background-color: #d1cecc;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.edit_group_info h2,
+.update_meeting_details h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.edit_group_info p,
+.update_meeting_details p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.edit_group_info button,
+.update_meeting_details button {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff; /* blue color */
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit_group_info button:hover,
+.update_meeting_details button:hover {
+    background-color: #0056b3; /* darker blue color on hover */
+}
+
+  </style>
+</head>
+
+
+
+<body ng-controller="FormController">
+    <header class="header_section">
+     
+      
+        <div class="header_bottom" style="background-color:rgba(148, 89, 11, 0.865);">
+          <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg custom_nav-container ">
+              <a class="navbar-brand" href="index.html">
+                <img src="{{url_for('static',filename='images/logo2.jpg')}}" alt="" style="width: 60px; height:60px;">
+              </a>
+              </a>
+  
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class=""> </span>
+              </button>
+  
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/" style="font-size:18px;font-weight:bold;">Home <span class="sr-only">(current)</span></a>
+                    </li>
+            
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="groupDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:18px;font-weight:bold;">
+                            GROUP
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="groupDropdown">
+                            <a class="dropdown-item" href="/group.html" style="font-size:18px;font-weight:bold;">Create New Group</a>
+                            <a class="dropdown-item" href="/group.html" style="font-size:18px;font-weight:bold;">Manage Existing Group</a>
+                        </div>
+                    </li>
+            
+                    <li class="nav-item">
+                        <a class="nav-link" href="" style="font-size:18px;font-weight:bold;">Login</a>
+                    </li>
+                    
+                    <form class="form-inline">
+                        <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </ul>
+            
+               
+             </div>   
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <section class="view_group_information_section">
+        <div class="container">
+          <!-- First Div for Edit Group Settings -->
+          <div class="row align-items-center justify-content-center" style="margin-top: 50px;">
+            <div class="col-md-6">
+              <div class="edit_group_info">
+                <h2>Edit Group Settings</h2>
+                <p>In the edit option, you can modify the basic information and settings of your group, such as group name, total number of members, starting date, interest percentage, and meeting pattern.</p>
+                <button class="btn btn-secondary" onclick="redirectToNewPage('/edit_group_settings.html')">Edit Group Settings</button>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Second Div for Update Meeting Details -->
+          <div class="row align-items-center justify-content-center" style="margin-top: 50px;">
+            <div class="col-md-6">
+              <div class="update_meeting_details">
+                <h2>Update Meeting Details</h2>
+                <p>In the update option, you can manage and update the details of each meeting, including member savings, loan status, and other relevant information.</p>
+                <button class="btn btn-primary" onclick="redirectToNewPage('/update_meeting.html')">Update Meeting Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+     
+
+      <script>
+        function redirectToNewPage(page) {
+            // Redirect to the new page
+            window.location.href = page;
+        }
+    </script>
+   
+      <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="{{url_for('static',filename='js/bootstrap.js')}}"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+      <script src="https://huynhhuynh.github.io/owlcarousel2-filter/dist/owlcarousel2-filter.min.js"></script>
+      <script src="{{url_for('static',filename='js/custom.js')}}"></script> 
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      
+</body>
+</html>

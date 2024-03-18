@@ -17,7 +17,7 @@ mydb=mysql.connector.connect(
 )
 global mycursor
 mycursor=mydb.cursor()
-global i
+
 
 
 @app.route('/')
@@ -27,6 +27,7 @@ def index():
 
 @app.route('/member_info.html')
 def memb():
+    
     sql = "SELECT Member_id, M_Name, Age, Adress, ph_no FROM GRPP WHERE gp_Username = %s"
     mycursor.execute(sql, (inn_username,))
     members = mycursor.fetchall()
@@ -127,6 +128,64 @@ def mg():
 @app.route('/grp_info.html')
 def Grp_info():
     return render_template("grp_info.html")
+
+@app.route('/edit_info.html')
+def edit_Inf():
+    return render_template("edit_info.html")
+
+
+@app.route('/update_meeting.html')
+def update_Meet():
+    
+    mycursor.callproc('GetWeeksCoveredByUsername', [inn_username,])
+    for result in mycursor.stored_results():
+        result1 = result.fetchall()
+    
+    if not result1:  # Check if result1 is an empty list
+        week_no = 0
+    else:
+        week_no = result1[0][1]
+
+    sql3 = "SELECT * FROM GRPP WHERE gp_Username = %s"
+    mycursor.execute(sql3, (inn_username,))
+    members = mycursor.fetchall()
+    member_num = len(members)
+    return render_template("update_meeting.html", week_number=week_no+1,len_memberz=member_num,members=members)
+
+
+@app.route('/submit_form', methods=['POST'])
+def submit_form():
+    # Access form data using request object
+    member_ids = request.form.getlist('member_id')
+    names = request.form.getlist('name')
+    dates = request.form.getlist('date')
+    savings = request.form.getlist('saving')
+    loans_taken = request.form.getlist('loan_taken')
+    loans_returned = request.form.getlist('loan_returned')
+    interest_returned = request.form.getlist('interest_returned')
+    print("****************")
+    print(member_ids)
+    print("****************")
+    print(names)
+    print("****************")
+    print(dates)
+    print("****************")
+    print(savings)
+    print("****************")
+    print(loans_taken)
+    print("****************")
+    print(loans_returned)
+    print("****************")
+    print(interest_returned)
+    return 'Form submitted successfully!' 
+
+
+
+
+
+
+
+
 
 
 

@@ -129,7 +129,7 @@
               <div class="edit_group_info" >
                   <h2>Edit Group Information</h2>
                   <p>In the edit option, you can edit all information related to your group, such as interests, loans, collected amounts, and more.</p>
-                  <button class="btn btn-secondary">Edit Group Information</button>
+                  <button class="btn btn-secondary" onclick="redirectToNewPage('/edit_info.html')">Edit Group Information</button>
               </div>
           </div>
       </div>
@@ -140,7 +140,7 @@
         <div class="edit_group_info">
             <h2>Group Member Details</h2>
             <p>Here you can view the personal details of group members, and you have the option to edit their personal information if necessary.</p>
-            <button class="btn btn-secondary"  onclick="redirectToNewPage()">Member Details</button>
+            <button class="btn btn-secondary"  onclick="redirectToNewPage('/member_info.html')">Member Details</button>
         </div>
       </div>
    </div>
@@ -151,10 +151,12 @@
 
 <!-- Footer Section (You can add it later if needed) -->
 <script>
-    function redirectToNewPage() {
+    function redirectToNewPage(page) {
         // Redirect to the new page
-        window.location.href = "/member_info.html";
+        window.location.href = page;
     }
+
+    
 </script>
 
 <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
