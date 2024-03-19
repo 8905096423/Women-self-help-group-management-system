@@ -136,48 +136,98 @@ def edit_Inf():
 
 @app.route('/update_meeting.html')
 def update_Meet():
-    
-    mycursor.callproc('GetWeeksCoveredByUsername', [inn_username,])
+    global week_no
+    mycursor.callproc('GetMaxWeekNoByUsername', [inn_username,])
     for result in mycursor.stored_results():
         result1 = result.fetchall()
     
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    print(result1)
+    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
     if not result1:  # Check if result1 is an empty list
-        week_no = 0
+        week_no = 1
     else:
-        week_no = result1[0][1]
+        week_no = result1[0][1]+1
 
     sql3 = "SELECT * FROM GRPP WHERE gp_Username = %s"
     mycursor.execute(sql3, (inn_username,))
     members = mycursor.fetchall()
     member_num = len(members)
-    return render_template("update_meeting.html", week_number=week_no+1,len_memberz=member_num,members=members)
+
+    #print("*********************************",member_num)
+    return render_template("update_meeting.html", week_number=week_no,len_memberz=member_num,members=members)
+
+import mysql.connector
+
+# Assuming you have already established your Flask app
 
 
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
-    # Access form data using request object
-    member_ids = request.form.getlist('member_id')
-    names = request.form.getlist('name')
-    dates = request.form.getlist('date')
-    savings = request.form.getlist('saving')
-    loans_taken = request.form.getlist('loan_taken')
-    loans_returned = request.form.getlist('loan_returned')
-    interest_returned = request.form.getlist('interest_returned')
-    print("****************")
-    print(member_ids)
-    print("****************")
-    print(names)
-    print("****************")
-    print(dates)
-    print("****************")
-    print(savings)
-    print("****************")
-    print(loans_taken)
-    print("****************")
-    print(loans_returned)
-    print("****************")
-    print(interest_returned)
-    return 'Form submitted successfully!' 
+
+        member_ids = request.form.getlist('member_id')
+        dates = request.form.getlist('date')
+        savings = request.form.getlist('saving')
+        loans_taken = request.form.getlist('loan_taken')
+        loans_returned = request.form.getlist('loan_returned')
+        interest_returned = request.form.getlist('interest_returned')
+        fine_amount = request.form.getlist('fine_amount')
+        
+        # Establish database connection
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="RNSIT#123h",
+            database="women1"
+        )
+
+        cursor = conn.cursor()
+        
+        #print("........................... len(member_id) ", len(member_ids))
+        for i in range(len(member_ids)):
+            member_id = member_ids[i]
+            date = dates[i]
+            saving = savings[i]
+            loan_taken = loans_taken[i]
+            loan_returned = loans_returned[i]
+            interest_returned_value = interest_returned[i] if i < len(interest_returned) else None
+            fine = fine_amount[i]
+            
+           # print("**************** inside the for loop interest_returned ", interest_returned_value)
+           # print("**************** inside the for loop saving ", saving)
+            
+            sql_saving = "INSERT INTO SAVING (username, Member_id, Saving_date, Saving_amt, week_no_mo, fine_amt) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql_saving, (inn_username, member_id, date, saving, week_no, fine))
+
+            loan_id = ""
+           #  print(" CAme Came CAme ***************")
+            if float(loan_taken) != 0:
+                loan_id = member_id + "_" + str(week_no)
+                sql_loan = "INSERT INTO LOAN (username, Loan_id, Member_id, Loan_date, week_no, Amount) VALUES (%s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql_loan, (inn_username, loan_id, member_id, date, week_no, loan_taken))
+
+            # Insert data into LOAN_RET table if loan_returned is not empty
+            if float(loan_returned) != 0:
+                sql3 = "SELECT * FROM LOAN WHERE Member_id = %s"
+                cursor.execute(sql3, (member_id,))
+                loan_members = cursor.fetchall()
+                
+                sql3 = "SELECT MAX(Loan_id) FROM LOAN WHERE Member_id = %s"
+                cursor.execute(sql3, (member_id,))
+                max_loan_id = cursor.fetchone()[0]
+
+                sql_loan_ret = "INSERT INTO LOAN_RET (username, Loan_id, Member_id, loan_Returned_Amount, intrest_returned, Return_week, dateu) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                cursor.execute(sql_loan_ret, (inn_username, max_loan_id, member_id, loan_returned, interest_returned_value, week_no, date))
+
+        # Commit changes and close cursor/connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect('/update_meeting.html')
+    
+    
+
 
 
 

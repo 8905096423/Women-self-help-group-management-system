@@ -80,7 +80,7 @@
     
         <!-- Table -->
         <div class="container mt-4">
-            <form action="/submit_form" method="post"> <!-- Specify the action and method for the form -->
+            <form id="submitForm" action="/submit_form" method="post" onsubmit="return confirmSubmit()"><!-- Specify the action and method for the form -->
                 <table class="table">
                     <thead>
                         <tr>
@@ -91,6 +91,7 @@
                             <th scope="col" style="width: 10%;">Loan Taken?</th>
                             <th scope="col" style="width: 15%;">Any Loan Amount Returned?</th>
                             <th scope="col" style="width: 15%;">Loan Interest Returned?</th>
+                            <th scope="col" style="width: 15%;">Fine</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,9 +102,10 @@
                             <td><input type="text" name="name" value="{{members[i][2]}}" class="form-control" re></td>
                             <td><input type="date" name="date" class="form-control"></td>
                             <td><input type="text" name="saving" class="form-control"></td>
-                            <td><input type="text" name="loan_taken" class="form-control"></td>
-                            <td><input type="text" name="loan_returned" class="form-control"></td>
-                            <td><input type="text" name="interest_returned" class="form-control"></td>
+                            <td><input type="text" name="loan_taken" class="form-control" value=""></td>
+                            <td><input type="text" name="loan_returned" class="form-control" value=""></td>
+                            <td><input type="text" name="interest_returned" class="form-control" value=""></td>
+                            <td><input type="text" name="fine_amount" class="form-control" value=""></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -111,6 +113,27 @@
                 <button type="submit" class="btn btn-primary">Submit</button> <!-- Add a submit button to submit the form -->
             </form>
         </div>
+
+        <script>
+             function confirmSubmit() {
+        // Show a confirmation dialog
+        var confirmMsg = "Are you sure you want to submit the form?";
+        if (confirm(confirmMsg)) {
+            // If the user confirms, show another confirmation dialog to check for changes
+            var confirmChangesMsg = "Are you sure you want to submit the form without checking for changes?";
+            if (confirm(confirmChangesMsg)) {
+                // If the user confirms again, submit the form
+                return true;
+            } else {
+                // If the user cancels the second confirmation, prevent form submission
+                return false;
+            }
+        } else {
+            // If the user cancels the first confirmation, prevent form submission
+            return false;
+        }
+    }
+        </script>
         
 
       <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
