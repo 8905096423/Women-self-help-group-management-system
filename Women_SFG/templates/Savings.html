@@ -84,55 +84,60 @@
                             </button>
                         </form>
                     </ul>
-                
-                   
                  </div>   
                 </nav>
               </div>
             </div>
-          </header>
 
- 
+          
+          </header>
+     
+          <div class="container" style="margin-top: 50px;">
+            <h2 style="margin-bottom: 30px;">Savings Table</h2>
+            <table class="table table-striped" style="background-color: #f8f9fa;">
+                <thead style="background-color: #343a40; color: white;">
+                    <tr>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Member ID</th>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Name</th>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Saving Date</th>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Saving Amount</th>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Week/month No.</th>
+                        <th style="padding: 15px;background-color: rgb(211, 205, 202);">Fine Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in saving_members %}
+                    <tr>
+                        <td style="padding: 15px;">{{member[0]}}</td>
+                        <td style="padding: 15px;">{{member[5]}}</td>
+                        <td style="padding: 15px;">{{member[1]}}</td>
+                        <td style="padding: 15px;">{{member[2]}}</td>
+                        <td style="padding: 15px;">{{member[3]}}</td>
+                        <td style="padding: 15px;">{{member[4]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table style="margin-top: 30px;">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="background-color: #343a40; color: white; padding: 15px;">Summary of Weekly or Monthly Savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 15px;">Total saving amount saved by Shuddhi group:</td>
+                        <td style="padding: 15px;">{{tot_sav}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px;">Total fine amount of Shuddhi group:</td>
+                        <td style="padding: 15px;">{{tot_fine}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         
-            <div class="container">
-                <br>
-                <h2>Members Table</h2>
-                <br>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Member ID</th>
-                            <th>Member Name</th>
-                            <th>Total Savings</th>
-                            <th>Loan Amount Taken</th>
-                            <th>Loan Amount Paid</th>
-                            <th>Loan Status</th>
-                            <th>Loan Interest</th>
-                            <th>Interest Paid</th>
-                            <th>Loan Interest Status</th>
-                            <th>Total Fine Paid</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in range(num_members) %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>$50</td>
-                        </tr>
-                        {% endfor %}
-                        <!-- Add more rows as needed -->
-                    </tbody>
-                </table>
-            </div>
-        
+
 
           <script src="{{url_for('static',filename='js/jquery-3.4.1.min.js')}}"></script>
           <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

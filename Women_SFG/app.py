@@ -65,6 +65,12 @@ def delete_member(member_id):
 
 
 
+
+
+
+
+
+
 @app.route('/get_data')
 def get_data():
    
@@ -78,6 +84,8 @@ def get_data():
     return jsonify(data)
 
 
+
+
 @app.route('/save-member/<member_id>/<name>/<age>/<address>/<ph_no>', methods=['POST'])
 def save_member(member_id,name,age,address,ph_no):
     
@@ -85,8 +93,6 @@ def save_member(member_id,name,age,address,ph_no):
     query = "SELECT * FROM GRPP WHERE Member_id = %s"
     mycursor.execute(query, (member_id,))
     existing_member = mycursor.fetchone()
-
-
 
     if existing_member:
         # Member ID exists, update the member details
@@ -134,6 +140,97 @@ def edit_Inf():
     return render_template("edit_info.html")
 
 
+
+
+
+
+@app.route('/viewSelect.html')
+def viv():
+    return render_template("viewSelect.html")
+
+
+
+@app.route('/Savings.html')
+def viv_Sav():
+    global tot_sav
+    global tot_fine
+    sql11 ="SELECT Member_id, Saving_date, Saving_amt, week_no_mo, fine_amt, Name FROM MemberSavingDetails WHERE username = %s ORDER BY week_no_mo"
+    mycursor.execute(sql11, (inn_username,))
+    sav_members = mycursor.fetchall()
+    tot_sav=0
+    tot_fine=0
+    for member in sav_members:
+        tot_sav = tot_sav+member[2]
+        tot_fine =tot_fine+member[4]
+    return render_template("Savings.html",saving_members=sav_members,tot_sav=tot_sav,tot_fine=tot_fine)
+
+
+
+
+@app.route('/Loan_details.html')
+def viv_Lo():
+    global tot_lon
+    global tot_int
+    sql12 ="SELECT Member_id, Loan_id, Loan_date, week_no, Amount, Name,Loan_interest FROM loandetails WHERE username = %s ORDER BY week_no"
+    mycursor.execute(sql12, (inn_username,))
+    lo_members = mycursor.fetchall()
+    tot_lon=0
+    tot_int=0
+    for member in lo_members:
+        tot_lon=tot_lon+member[4]
+        tot_int=tot_int+member[6]
+    return render_template("Loan_details.html",lo_members=lo_members,tot_lon=tot_lon,tot_int=tot_int)
+
+
+
+
+@app.route('/return.html')
+def Retturnn():
+    global tot_ret_lon
+    global tot_ret_int
+    sql13 ="SELECT Member_id, Loan_id, Loan_returned_amount, Interest_returned, Week_no, Date,Name FROM loanreturndetails WHERE Username = %s ORDER BY Week_no"
+    mycursor.execute(sql13, (inn_username,))
+    ret_members = mycursor.fetchall()
+    tot_ret_lon = 0
+    tot_ret_int =0
+    for member in ret_members:
+        tot_ret_lon = tot_ret_lon + member[2]
+        tot_ret_int = tot_ret_int + member[3]
+    return render_template("return.html",ret_members=ret_members,tot_ret_lon=tot_ret_lon,tot_ret_int=tot_ret_int)
+
+
+
+
+@app.route('/Summary.html')
+def Summ():
+    aval= tot_sav + tot_fine - tot_lon + tot_ret_lon + tot_ret_int
+    print(tot_sav)
+    return render_template("Summary.html",aval=aval,tot_sav =tot_sav ,tot_fine=tot_fine,tot_lon=tot_lon, tot_ret_lon =tot_ret_lon ,tot_ret_int=tot_ret_int)
+
+
+
+
+
+
+
+
+@app.route('/view1.html')
+def Viv_1():
+    sql = "SELECT * FROM GRPP WHERE gp_Username = %s"
+    mycursor.execute(sql, (inn_username,))
+    members = mycursor.fetchall()
+    num_members = len(members)
+    return render_template("view1.html",num_members=num_members)
+
+
+
+
+
+
+
+
+
+
 @app.route('/update_meeting.html')
 def update_Meet():
     global week_no
@@ -160,6 +257,10 @@ def update_Meet():
 import mysql.connector
 
 # Assuming you have already established your Flask app
+
+
+
+
 
 
 @app.route('/submit_form', methods=['POST'])
@@ -260,6 +361,8 @@ def grp_signin():
 
 
 
+
+
 @app.route('/Grp_signup', methods=['POST'])
 def grp_signup():
     global gr_signup 
@@ -293,6 +396,8 @@ def grp_signup():
 
     signup_form = True
     return render_template('group.html', signup_confirm=signup_form,username_exists=False)
+
+
 
 
 
