@@ -200,7 +200,6 @@ def Retturnn():
 
 
 
-
 @app.route('/Summary.html')
 def Summ():
     aval= tot_sav + tot_fine - tot_lon + tot_ret_lon + tot_ret_int
